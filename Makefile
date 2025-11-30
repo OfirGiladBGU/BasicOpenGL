@@ -15,14 +15,14 @@ else
         CFLAGS = clang -std=c11 -Wall -g -I${workspaceFolder}/include -I${workspaceFolder}/src
         CLIBS = -L${workspaceFolder}/lib/macOS ${workspaceFolder}/bin/libglfw.3.dylib
         LDFLAGS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated -Wl,-rpath,.
-        FFTW_LDFLAGS = -lfftw3-3 -lfftw3f-3 -lm
+        FFTW_LDFLAGS = -lfftw3 -lfftw3f -lm
         all: copy_lib_m copy_res_m build
     else ifeq ($(UNAME_S), Linux) # Linux
         CPPFLAGS = g++ --std=c++17 -fdiagnostics-color=always -Wall -g -I${workspaceFolder}/include -I${workspaceFolder}/src
         CFLAGS = gcc -std=c11 -Wall -g -I${workspaceFolder}/include -I${workspaceFolder}/src
         CLIBS = -L${workspaceFolder}/lib/linux
         LDFLAGS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
-        FFTW_LDFLAGS = -lfftw3-3 -lfftw3f-3 -lm
+        FFTW_LDFLAGS = -lfftw3 -lfftw3f -lm
         all: copy_lib_l copy_res_l build
     else
         $(error Unsupported OS: $(UNAME_S))
