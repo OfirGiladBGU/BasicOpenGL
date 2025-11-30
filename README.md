@@ -41,6 +41,35 @@
    ```
 
 
+### For Windows (Enabling FFTW - Fastest Fourier Transform in the West):
+
+**Note:** Under the folder: `lib/windows` there are several files with the name: `libfftw3`. \
+In case that `make` fails to compile with them:
+
+1. Delete all the files with the `.exp` and `.lib` extentions that contatin the name: `libfftw3`.
+
+2. Make sure that the command `lib` in the CMD is working. \
+   If not, add to your computer Environment Variables, under `System variables > Path`, the following path: \
+   Option 1:
+   ```
+   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64
+   ```
+   Option 2:
+   ```
+   C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64
+   ```
+   **Note:**
+   - The path may differ a bit based on the installed Visual Studio Version.
+   - See the following link for help: \
+   https://stackoverflow.com/questions/5343932/lib-exe-visual-studio-generating-lib-files-from-dlls-and-def-files
+
+3. Navigate with the CMD to the path `lib/windows` and run the following commands on the CMD:
+   ```
+   lib /def:libfftw3-3.def
+   lib /def:libfftw3f-3.def
+   ```
+
+
 ### For MacOS (make `+` C/C++ compilers):
 
 1. Install `Xcode Command Line Tools` using the following command on the Terminal:
@@ -54,6 +83,17 @@
 3. (Optional) Install with `brew` the `GLFW` library using the following command on the Terminal:
    ```
    brew install glfw
+   ```
+
+
+### For MacOS (Enabling FFTW - Fastest Fourier Transform in the West):
+
+1. Install `brew` from the following website: \
+   https://brew.sh/
+
+1. Install `fftw` using the following command on the Terminal:
+   ```
+   brew install fftw
    ```
 
 
@@ -72,6 +112,15 @@
 3. Install `OpenGL` and `GLFW` using the following command on the Terminal:
    ```
    sudo apt install libgl-dev libglfw3-dev libxi-dev
+   ```
+
+
+### For Linux (Enabling FFTW - Fastest Fourier Transform in the West):
+
+1. Install `fftw` using the following command on the Terminal:
+   ```
+   sudo apt install libfftw3-dev
+   sudo apt install libfftw3-single3
    ```
 
 
@@ -163,3 +212,6 @@ To remove the block, open the MacOS "Settings", go to "Privacy & Security", scro
 
 - glm: \
   https://github.com/g-truc/glm/releases/tag/1.0.1
+
+- fftw: \
+  https://www.fftw.org/download.html

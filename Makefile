@@ -6,6 +6,7 @@ ifeq ($(OS),Windows_NT) # Windows
     CFLAGS = gcc -std=c11 -Wall -g -I${workspaceFolder}/include -I${workspaceFolder}/src
     CLIBS = -L${workspaceFolder}/lib/windows
     LDFLAGS = -lglfw3dll -lopengl32
+    FFTW_LDFLAGS = -lfftw3-3 -lfftw3f-3 -lm
     all: copy_lib_w copy_res_w build
 else
     UNAME_S := $(shell uname -s)
@@ -14,12 +15,14 @@ else
         CFLAGS = clang -std=c11 -Wall -g -I${workspaceFolder}/include -I${workspaceFolder}/src
         CLIBS = -L${workspaceFolder}/lib/macOS ${workspaceFolder}/bin/libglfw.3.dylib
         LDFLAGS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreFoundation -Wno-deprecated -Wl,-rpath,.
+        FFTW_LDFLAGS = -lfftw3-3 -lfftw3f-3 -lm
         all: copy_lib_m copy_res_m build
     else ifeq ($(UNAME_S), Linux) # Linux
         CPPFLAGS = g++ --std=c++17 -fdiagnostics-color=always -Wall -g -I${workspaceFolder}/include -I${workspaceFolder}/src
         CFLAGS = gcc -std=c11 -Wall -g -I${workspaceFolder}/include -I${workspaceFolder}/src
         CLIBS = -L${workspaceFolder}/lib/linux
         LDFLAGS = -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+        FFTW_LDFLAGS = -lfftw3-3 -lfftw3f-3 -lm
         all: copy_lib_l copy_res_l build
     else
         $(error Unsupported OS: $(UNAME_S))
@@ -39,7 +42,7 @@ ${workspaceFolder}/bin/glad.o: ${workspaceFolder}/src/glad.c | $(workspaceFolder
 	$(CFLAGS) -c $< -o $@
 
 build: $(OBJ_FILES) | $(workspaceFolder)/bin
-	$(CPPFLAGS) $(CLIBS) $(OBJ_FILES) -o ${workspaceFolder}/bin/main $(LDFLAGS)
+	$(CPPFLAGS) $(CLIBS) $(OBJ_FILES) -o ${workspaceFolder}/bin/main $(LDFLAGS) $(FFTW_LDFLAGS)
 
 # Copy library and resources (MacOS)
 copy_lib_m:
@@ -54,6 +57,10 @@ copy_res_m:
 copy_lib_w:
 	@echo "Copying library for Windows..."
 	cmd /c xcopy /D /I ${workspaceFolder}\lib\windows\glfw3.dll ${workspaceFolder}\bin\
+
+	cmd /c xcopy /D /I ${workspaceFolder}\lib\windows\libfftw3-3.dll ${workspaceFolder}\bin\
+
+	cmd /c xcopy /D /I ${workspaceFolder}\lib\windows\libfftw3f-3.dll ${workspaceFolder}\bin\
 
 copy_res_w:
 	@echo "Copying resources for Windows..."
